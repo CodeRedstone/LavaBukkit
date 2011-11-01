@@ -6,6 +6,7 @@ package net.minecraft.src;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
@@ -298,6 +299,29 @@ public class GuiIngame extends Gui
             	for(int x = 0; x < hecks.size(); x++){
             		fontrenderer.drawStringWithShadow(hecks.get(x).toString(), 2, 10 * x + 12, 0xffffff);
             	}
+            }
+            if(LavaBukkit.radar){
+            	fontrenderer.drawStringWithShadow("Radar", k - 80, l -112, 0xffffff);
+            	List<EntityLiving> entities = mc.theWorld.getLoadedEntityList();
+                int pdisx = (int) Math.round(mc.thePlayer.posX);
+                int pdisz = (int) Math.round(mc.thePlayer.posZ);
+            	for (int y = 0; y < entities.size(); y++) {
+                    Entity entity = entities.get(y);
+                    int disx = (int) Math.round(entity.posX);
+                    int disz = (int) Math.round(entity.posZ);
+                   
+                    int ddisx = pdisx - disx;
+                    int ddisz = pdisz - disz;
+             
+                    if(ddisx <= 100 && ddisz <= 100 && ddisx >= -100 && ddisz >= -100 && entity != mc.thePlayer && entity instanceof EntityLiving) {
+                    	if(entity instanceof EntityPlayer){
+                            drawRect(LavaBukkit.radarX - 1 - ddisx / 2, LavaBukkit.radarY - 1 - ddisz / 2, LavaBukkit.radarX + 1 - ddisx / 2,LavaBukkit.radarY + 1 - ddisz / 2, 0x99ff0000);
+                    	}else{
+                    		drawRect(LavaBukkit.radarX - 1 - ddisx / 2, LavaBukkit.radarY - 1 - ddisz / 2, LavaBukkit.radarX + 1 - ddisx / 2,LavaBukkit.radarY + 1 - ddisz / 2, 0x9904ff0c);
+                    	}
+                    }
+                    drawRect(LavaBukkit.radarX + 1, LavaBukkit.radarY + 1, LavaBukkit.radarX - 1, LavaBukkit.radarY - 1, 0x9900ff00);
+            }
             }
         }
         if(recordPlayingUpFor > 0)

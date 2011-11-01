@@ -732,6 +732,7 @@ public class NetClientHandler extends NetHandler
 
     public void handleUpdateSign(Packet130UpdateSign packet130updatesign)
     {
+    	try{
         if(mc.theWorld.blockExists(packet130updatesign.xPosition, packet130updatesign.yPosition, packet130updatesign.zPosition))
         {
             TileEntity tileentity = mc.theWorld.getBlockTileEntity(packet130updatesign.xPosition, packet130updatesign.yPosition, packet130updatesign.zPosition);
@@ -746,6 +747,9 @@ public class NetClientHandler extends NetHandler
                 tileentitysign.onInventoryChanged();
             }
         }
+    	}catch(Exception ex){
+    		
+    	}
     }
 
     public void handleCraftingProgress(Packet105UpdateProgressbar packet105updateprogressbar)

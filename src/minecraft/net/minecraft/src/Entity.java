@@ -481,7 +481,9 @@ public abstract class Entity
                 } else
                 if(!Block.blocksList[j3].blockMaterial.getIsLiquid())
                 {
+                	try{
                     worldObj.playSoundAtEntity(this, stepsound.stepSoundDir2(), stepsound.getVolume() * 0.15F, stepsound.getPitch());
+                	}catch(Exception ex){}
                 }
                 Block.blocksList[j3].onEntityWalking(worldObj, l, j1, l1, this);
             }

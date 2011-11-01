@@ -158,49 +158,12 @@ public class EntityClientPlayerMP extends EntityPlayerSP
     public void sendChatMessage(String s)
     {
     	//Here is the Chat Commands
-    	try
-    	{
-    		String chat[] = s.trim().split(" ");
-    		if(chat[0].startsWith("#"))
-    		{
-    			if(chat[0].equals("#spam"))
-    			{
-    				try
-    				{
-    					boolean flag = false;
-    					String as1[] = s.split("=");
-    					String s1 = as1[1];
-    					int j = Integer.parseInt(as1[2]);
-    					for(int k = 0; k < j; k++)
-    					{
-    						sendQueue.addToSendQueue(new Packet3Chat(s1));
-    					}
-    				}
-    				catch(Exception exception)
-    				{
-            		mc.thePlayer.addChatMessage("Invalid Syntax: #spam=<Message>=[Integer]");
-    				}
-    			}
-    			if(chat[0].equals("#help"))
-    			{
-    				mc.thePlayer.addChatMessage("\247cWelcome to LavaBukkit's Help page");
-    				mc.thePlayer.addChatMessage("#credits");
-    				mc.thePlayer.addChatMessage("#hChat - Hides Chat");
-    			}
-    			if(chat[0].equals("#credits"))
-    			{
-    				mc.thePlayer.addChatMessage("\247c### LavaBukkit ###");
-    				mc.thePlayer.addChatMessage("Please contribute by helping out on GitHub");
-    				mc.thePlayer.addChatMessage("http://www.github.com/XiCracked/LavaBukkit");
-    			}
-    			if(chat[0].equals("#hChat")) LavaBukkit.hideChat = !LavaBukkit.hideChat;
-    		} else {
-    			sendQueue.addToSendQueue(new Packet3Chat(s));
-    		}
+    	if(s.startsWith("#")){
+    			LavaBukkit.parseCommand(s.substring(1));
+    	} else {
+    		sendQueue.addToSendQueue(new Packet3Chat(s));
     	}
-    	catch(Exception ex){
-    		mc.thePlayer.addChatMessage("Failed command. :(");
-    	}
+    	
     }
 
     public void swingItem()

@@ -275,7 +275,7 @@ public class WorldInfo
     private int spawnX;
     private int spawnY;
     private int spawnZ;
-    private long worldTime;
+    static long worldTime;
     private long lastTimePlayed;
     private long sizeOnDisk;
     private NBTTagCompound playerTag;

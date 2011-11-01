@@ -1106,6 +1106,9 @@ public abstract class Minecraft
             for(; gameSettings.keyBindInventory.func_35962_c(); displayGuiScreen(new GuiInventory(thePlayer))) { }
             for(; gameSettings.keyBindDrop.func_35962_c(); thePlayer.dropCurrentItem()) { }
             for(; isMultiplayerWorld() && gameSettings.keyBindChat.func_35962_c(); displayGuiScreen(new GuiChat())) { }
+            if(Keyboard.getEventKey() == Keyboard.KEY_B){ 
+            	displayGuiScreen(new GuiConsole()); 
+            }
             if(thePlayer.func_35196_Z())
             {
                 if(!gameSettings.field_35381_w.field_35965_e)
@@ -1575,7 +1578,7 @@ public abstract class Minecraft
         thread.start();
     }
 
-    public NetClientHandler getSendQueue()
+    public static NetClientHandler getSendQueue()
     {
         if(thePlayer instanceof EntityClientPlayerMP)
         {
@@ -1659,7 +1662,7 @@ public abstract class Minecraft
     public int displayHeight;
     private OpenGlCapsChecker glCapabilities;
     private Timer timer;
-    public World theWorld;
+    public static World theWorld;
     public RenderGlobal renderGlobal;
     public static EntityPlayerSP thePlayer;
     public EntityLiving renderViewEntity;
