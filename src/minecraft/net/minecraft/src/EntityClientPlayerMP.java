@@ -27,6 +27,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP
         wasSneaking = false;
         field_12242_bI = 0;
         sendQueue = netclienthandler;
+        auraCounter = 0;
     }
 
     public boolean attackEntityFrom(DamageSource damagesource, int i)
@@ -140,6 +141,30 @@ public class EntityClientPlayerMP extends EntityPlayerSP
             oldRotationYaw = rotationYaw;
             oldRotationPitch = rotationPitch;
         }
+        
+        if (LavaBukkit.killAura)
+        {
+        	auraCounter++; //Using a counter so it doesn't try to attack constantly. Probably a better way to accomplish this. -Hydrogen
+        	if (auraCounter > 3)
+        	{
+        		for (int i = 0; i < mc.theWorld.loadedEntityList.size(); i++)
+        		{
+        			if (mc.theWorld.loadedEntityList.get(i) != this && getDistanceToEntity((Entity)mc.theWorld.loadedEntityList.get(i)) < 25D)
+        			{
+	        			if (LavaBukkit.targetPlayersOnly)
+	        			{
+	        				if (mc.theWorld.loadedEntityList.get(i) instanceof EntityPlayer) mc.playerController.attackEntity(this, (Entity)mc.theWorld.loadedEntityList.get(i));
+	        			}
+	        			else
+	        			{
+	        				if (mc.theWorld.loadedEntityList.get(i) instanceof EntityLiving) mc.playerController.attackEntity(this, (Entity)mc.theWorld.loadedEntityList.get(i));
+	        			}
+        			}
+        		}
+        		
+        		auraCounter = 0;
+        	}
+        }
     }
 
     public void dropCurrentItem()
@@ -240,4 +265,5 @@ public class EntityClientPlayerMP extends EntityPlayerSP
     private boolean field_35227_cs;
     private boolean wasSneaking;
     private int field_12242_bI;
+    private int auraCounter;
 }
