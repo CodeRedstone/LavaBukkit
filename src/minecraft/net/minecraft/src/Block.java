@@ -86,12 +86,14 @@ public class Block
 
     protected Block setLightOpacity(int i)
     {
+        
         lightOpacity[blockID] = i;
         return this;
     }
 
     protected Block setLightValue(float f)
     {
+    
         lightValue[blockID] = (int)(15F * f);
         return this;
     }
@@ -104,7 +106,10 @@ public class Block
 
     public boolean renderAsNormalBlock()
     {
+    	if(!LavaBukkit.Xray) {
         return true;
+    	} else {return false;}
+    	
     }
 
     public int getRenderType()
@@ -151,16 +156,28 @@ public class Block
 
     public float getBlockBrightness(IBlockAccess iblockaccess, int i, int j, int k)
     {
+    	if(LavaBukkit.Xray) {
+    		return 1000F;
+    	}
         return iblockaccess.getBrightness(i, j, k, lightValue[blockID]);
     }
 
     public int func_35275_c(IBlockAccess iblockaccess, int i, int j, int k)
     {
+    	if(LavaBukkit.Xray) {
+    		return 1000;
+    	}
         return iblockaccess.func_35451_b(i, j, k, lightValue[blockID]);
     }
 
     public boolean shouldSideBeRendered(IBlockAccess iblockaccess, int i, int j, int k, int l)
     {
+
+    	
+          if(LavaBukkit.Xray) {
+    	 	
+               return blockID == 56 || blockID == 73 || blockID == 21 || blockID == 15 || blockID == 14 || blockID == 16;
+  }
         if(l == 0 && minY > 0.0D)
         {
             return true;

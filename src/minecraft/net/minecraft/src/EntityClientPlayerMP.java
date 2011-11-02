@@ -17,253 +17,251 @@ import net.minecraft.client.Minecraft;
 public class EntityClientPlayerMP extends EntityPlayerSP
 {
 
-    public EntityClientPlayerMP(Minecraft minecraft, World world, Session session, NetClientHandler netclienthandler)
-    {
-        super(minecraft, world, session, 0);
-        field_9380_bx = 0;
-        field_21093_bH = false;
-        field_9382_bF = false;
-        field_35227_cs = false;
-        wasSneaking = false;
-        field_12242_bI = 0;
-        sendQueue = netclienthandler;
-        auraCounter = 0;
-    }
+	public EntityClientPlayerMP(Minecraft minecraft, World world, Session session, NetClientHandler netclienthandler)
+	{
+		super(minecraft, world, session, 0);
+		field_9380_bx = 0;
+		field_21093_bH = false;
+		field_9382_bF = false;
+		field_35227_cs = false;
+		wasSneaking = false;
+		field_12242_bI = 0;
+		sendQueue = netclienthandler;
+		auraCounter = 0;
+	}
 
-    public boolean attackEntityFrom(DamageSource damagesource, int i)
-    {
-        return false;
-    }
+	public boolean attackEntityFrom(DamageSource damagesource, int i)
+	{
+		return false;
+	}
 
-    public void heal(int i)
-    {
-    }
+	public void heal(int i)
+	{
+	}
 
-    public void onUpdate()
-    {
-        worldObj.getClass();
-        if(!worldObj.blockExists(MathHelper.floor_double(posX), 128 / 2, MathHelper.floor_double(posZ)))
-        {
-            return;
-        } else
-        {
-            super.onUpdate();
-            func_4056_N();
-            return;
-        }
-    }
+	public void onUpdate()
+	{
+		worldObj.getClass();
+		if(!worldObj.blockExists(MathHelper.floor_double(posX), 128 / 2, MathHelper.floor_double(posZ)))
+		{
+			return;
+		} else
+		{
+			super.onUpdate();
+			func_4056_N();
+			return;
+		}
+	}
 
-    public void func_4056_N()
-    {
-        if(field_9380_bx++ == 20)
-        {
-            sendInventoryChanged();
-            field_9380_bx = 0;
-        }
-        boolean flag = func_35117_Q();
-        if(flag != wasSneaking)
-        {
-            if(flag)
-            {
-                sendQueue.addToSendQueue(new Packet19EntityAction(this, 4));
-            } else
-            {
-                sendQueue.addToSendQueue(new Packet19EntityAction(this, 5));
-            }
-            wasSneaking = flag;
-        }
-        boolean flag1 = isSneaking();
-        if(flag1 != field_35227_cs)
-        {
-            if(flag1)
-            {
-                sendQueue.addToSendQueue(new Packet19EntityAction(this, 1));
-            } else
-            {
-                sendQueue.addToSendQueue(new Packet19EntityAction(this, 2));
-            }
-            field_35227_cs = flag1;
-        }
-        double d = posX - oldPosX;
-        double d1 = boundingBox.minY - field_9378_bz;
-        double d2 = posY - oldPosY;
-        double d3 = posZ - oldPosZ;
-        double d4 = rotationYaw - oldRotationYaw;
-        double d5 = rotationPitch - oldRotationPitch;
-        boolean flag2 = d1 != 0.0D || d2 != 0.0D || d != 0.0D || d3 != 0.0D;
-        boolean flag3 = d4 != 0.0D || d5 != 0.0D;
-        if(ridingEntity != null)
-        {
-            if(flag3)
-            {
-                sendQueue.addToSendQueue(new Packet11PlayerPosition(motionX, -999D, -999D, motionZ, onGround));
-            } else
-            {
-                sendQueue.addToSendQueue(new Packet13PlayerLookMove(motionX, -999D, -999D, motionZ, rotationYaw, rotationPitch, onGround));
-            }
-            flag2 = false;
-        } else
-        if(flag2 && flag3)
-        {
-            sendQueue.addToSendQueue(new Packet13PlayerLookMove(posX, boundingBox.minY, posY, posZ, rotationYaw, rotationPitch, onGround));
-            field_12242_bI = 0;
-        } else
-        if(flag2)
-        {
-            sendQueue.addToSendQueue(new Packet11PlayerPosition(posX, boundingBox.minY, posY, posZ, onGround));
-            field_12242_bI = 0;
-        } else
-        if(flag3)
-        {
-            sendQueue.addToSendQueue(new Packet12PlayerLook(rotationYaw, rotationPitch, onGround));
-            field_12242_bI = 0;
-        } else
-        {
-            sendQueue.addToSendQueue(new Packet10Flying(onGround));
-            if(field_9382_bF != onGround || field_12242_bI > 200)
-            {
-                field_12242_bI = 0;
-            } else
-            {
-                field_12242_bI++;
-            }
-        }
-        field_9382_bF = onGround;
-        if(flag2)
-        {
-            oldPosX = posX;
-            field_9378_bz = boundingBox.minY;
-            oldPosY = posY;
-            oldPosZ = posZ;
-        }
-        if(flag3)
-        {
-            oldRotationYaw = rotationYaw;
-            oldRotationPitch = rotationPitch;
-        }
-        
-        if (LavaBukkit.killAura)
-        {
-        	auraCounter++; //Using a counter so it doesn't try to attack constantly. Probably a better way to accomplish this. -Hydrogen
-        	if (auraCounter > 3)
-        	{
-        		for (int i = 0; i < mc.theWorld.loadedEntityList.size(); i++)
-        		{
-        			if (mc.theWorld.loadedEntityList.get(i) != this && getDistanceToEntity((Entity)mc.theWorld.loadedEntityList.get(i)) < 25D)
-        			{
-	        			if (LavaBukkit.targetPlayersOnly)
-	        			{
-	        				if (mc.theWorld.loadedEntityList.get(i) instanceof EntityPlayer) mc.playerController.attackEntity(this, (Entity)mc.theWorld.loadedEntityList.get(i));
-	        			}
-	        			else
-	        			{
-	        				if (mc.theWorld.loadedEntityList.get(i) instanceof EntityLiving) mc.playerController.attackEntity(this, (Entity)mc.theWorld.loadedEntityList.get(i));
-	        			}
-        			}
-        		}
-        		
-        		auraCounter = 0;
-        	}
-        }
-    }
+	public void func_4056_N()
+	{
+		if(field_9380_bx++ == 20)
+		{
+			sendInventoryChanged();
+			field_9380_bx = 0;
+		}
+		boolean flag = func_35117_Q();
+		if(flag != wasSneaking)
+		{
+			if(flag)
+			{
+				sendQueue.addToSendQueue(new Packet19EntityAction(this, 4));
+			} else
+			{
+				sendQueue.addToSendQueue(new Packet19EntityAction(this, 5));
+			}
+			wasSneaking = flag;
+		}
+		boolean flag1 = LavaBukkit.sneak ;
+		if(flag1 != field_35227_cs)
+		{
+			if(flag1)
+			{
+				sendQueue.addToSendQueue(new Packet19EntityAction(this, 1));
+			} else
+			{
+				sendQueue.addToSendQueue(new Packet19EntityAction(this, 2));
+			}
+			field_35227_cs = flag1;
+		}
+		double d = posX - oldPosX;
+		double d1 = boundingBox.minY - field_9378_bz;
+		double d2 = posY - oldPosY;
+		double d3 = posZ - oldPosZ;
+		double d4 = rotationYaw - oldRotationYaw;
+		double d5 = rotationPitch - oldRotationPitch;
+		boolean flag2 = d1 != 0.0D || d2 != 0.0D || d != 0.0D || d3 != 0.0D;
+		boolean flag3 = d4 != 0.0D || d5 != 0.0D;
+		if(ridingEntity != null)
+		{
+			if(flag3)
+			{
+				sendQueue.addToSendQueue(new Packet11PlayerPosition(motionX, -999D, -999D, motionZ, LavaBukkit.nofall ? true : onGround));
+			} else
+			{
+				sendQueue.addToSendQueue(new Packet13PlayerLookMove(motionX, -999D, -999D, motionZ, rotationYaw, rotationPitch, LavaBukkit.nofall ? true : onGround));
+			}
+			flag2 = false;
+		} else
+			if(flag2 && flag3)
+			{
+				sendQueue.addToSendQueue(new Packet13PlayerLookMove(posX, boundingBox.minY, posY, posZ, rotationYaw, rotationPitch, LavaBukkit.nofall ? true : onGround));
+				field_12242_bI = 0;
+			} else
+				if(flag2)
+				{
+					sendQueue.addToSendQueue(new Packet11PlayerPosition(posX, boundingBox.minY, posY, posZ, LavaBukkit.nofall ? true : onGround));
+					field_12242_bI = 0;
+				} else
+					if(flag3)
+					{
+						sendQueue.addToSendQueue(new Packet12PlayerLook(rotationYaw, rotationPitch, onGround));
+						field_12242_bI = 0;
+					} else
+					{
+						sendQueue.addToSendQueue(new Packet10Flying(onGround));
+						if(field_9382_bF != onGround || field_12242_bI > 200)
+						{
+							field_12242_bI = 0;
+						} else
+						{
+							field_12242_bI++;
+						}
+					}
+		field_9382_bF = onGround;
+		if(flag2)
+		{
+			oldPosX = posX;
+			field_9378_bz = boundingBox.minY;
+			oldPosY = posY;
+			oldPosZ = posZ;
+		}
+		if(flag3)
+		{
+			oldRotationYaw = rotationYaw;
+			oldRotationPitch = rotationPitch;
+		}
 
-    public void dropCurrentItem()
-    {
-        sendQueue.addToSendQueue(new Packet14BlockDig(4, 0, 0, 0, 0));
-    }
+		if (LavaBukkit.killAura)
+		{
+			auraCounter++; //Using a counter so it doesn't try to attack constantly. Probably a better way to accomplish this. -Hydrogen
+			if (auraCounter > 3)
+			{
+				for (int i = 0; i < mc.theWorld.loadedEntityList.size(); i++)
+				{
+					if (mc.theWorld.loadedEntityList.get(i) != this && getDistanceToEntity((Entity)mc.theWorld.loadedEntityList.get(i)) < 25D)
+					{
+						if (LavaBukkit.targetPlayersOnly)
+						{
+							if (mc.theWorld.loadedEntityList.get(i) instanceof EntityPlayer) mc.playerController.attackEntity(this, (Entity)mc.theWorld.loadedEntityList.get(i));
+						}
+						else
+						{
+							if (mc.theWorld.loadedEntityList.get(i) instanceof EntityLiving) mc.playerController.attackEntity(this, (Entity)mc.theWorld.loadedEntityList.get(i));
+						}
+					}
+				}
 
-    private void sendInventoryChanged()
-    {
-    }
+				auraCounter = 0;
+			}
+		}
+	}
 
-    protected void joinEntityItemWithWorld(EntityItem entityitem)
-    {
-    }
+	public void dropCurrentItem()
+	{
+		sendQueue.addToSendQueue(new Packet14BlockDig(4, 0, 0, 0, 0));
+	}
 
-    public void sendChatMessage(String s)
-    {
-    	//Here is the Chat Commands
-    	if(s.startsWith("#")){
-    			LavaBukkit.parseCommand(s.substring(1));
-    	} else {
-    		sendQueue.addToSendQueue(new Packet3Chat(s));
-    	}
-    	
-    }
+	private void sendInventoryChanged()
+	{
+	}
 
-    public void swingItem()
-    {
-        super.swingItem();
-        sendQueue.addToSendQueue(new Packet18Animation(this, 1));
-    }
+	protected void joinEntityItemWithWorld(EntityItem entityitem)
+	{
+	}
 
-    public void respawnPlayer()
-    {
-        sendInventoryChanged();
-        worldObj.getClass();
-        sendQueue.addToSendQueue(new Packet9Respawn((byte)dimension, (byte)worldObj.difficultySetting, worldObj.getRandomSeed(), 128, 0));
-    }
+	public void sendChatMessage(String s)
+	{
+		if(s.startsWith("#")){
+			LavaBukkit.parseCommand(s.substring(1));
+		} else {
+			sendQueue.addToSendQueue(new Packet3Chat(s));
+		}
+	}
 
-    protected void b(DamageSource damagesource, int i)
-    {
-        health -= i;
-    }
+	public void swingItem()
+	{
+		super.swingItem();
+		sendQueue.addToSendQueue(new Packet18Animation(this, 1));
+	}
 
-    public void closeScreen()
-    {
-        sendQueue.addToSendQueue(new Packet101CloseWindow(craftingInventory.windowId));
-        inventory.setItemStack(null);
-        super.closeScreen();
-    }
+	public void respawnPlayer()
+	{
+		sendInventoryChanged();
+		worldObj.getClass();
+		sendQueue.addToSendQueue(new Packet9Respawn((byte)dimension, (byte)worldObj.difficultySetting, worldObj.getRandomSeed(), 128, 0));
+	}
 
-    public void setHealth(int i)
-    {
-        if(field_21093_bH)
-        {
-            super.setHealth(i);
-        } else
-        {
-            health = i;
-            field_21093_bH = true;
-        }
-    }
+	protected void b(DamageSource damagesource, int i)
+	{
+		health -= i;
+	}
 
-    public void addStat(StatBase statbase, int i)
-    {
-        if(statbase == null)
-        {
-            return;
-        }
-        if(statbase.isIndependent)
-        {
-            super.addStat(statbase, i);
-        }
-    }
+	public void closeScreen()
+	{
+		sendQueue.addToSendQueue(new Packet101CloseWindow(craftingInventory.windowId));
+		inventory.setItemStack(null);
+		super.closeScreen();
+	}
 
-    public void func_27027_b(StatBase statbase, int i)
-    {
-        if(statbase == null)
-        {
-            return;
-        }
-        if(!statbase.isIndependent)
-        {
-            super.addStat(statbase, i);
-        }
-    }
+	public void setHealth(int i)
+	{
+		if(field_21093_bH)
+		{
+			super.setHealth(i);
+		} else
+		{
+			health = i;
+			field_21093_bH = true;
+		}
+	}
 
-    public NetClientHandler sendQueue;
-    private int field_9380_bx;
-    private boolean field_21093_bH;
-    private double oldPosX;
-    private double field_9378_bz;
-    private double oldPosY;
-    private double oldPosZ;
-    private float oldRotationYaw;
-    private float oldRotationPitch;
-    private boolean field_9382_bF;
-    private boolean field_35227_cs;
-    private boolean wasSneaking;
-    private int field_12242_bI;
-    private int auraCounter;
+	public void addStat(StatBase statbase, int i)
+	{
+		if(statbase == null)
+		{
+			return;
+		}
+		if(statbase.isIndependent)
+		{
+			super.addStat(statbase, i);
+		}
+	}
+
+	public void func_27027_b(StatBase statbase, int i)
+	{
+		if(statbase == null)
+		{
+			return;
+		}
+		if(!statbase.isIndependent)
+		{
+			super.addStat(statbase, i);
+		}
+	}
+
+	public NetClientHandler sendQueue;
+	private int field_9380_bx;
+	private boolean field_21093_bH;
+	private double oldPosX;
+	private double field_9378_bz;
+	private double oldPosY;
+	private double oldPosZ;
+	private float oldRotationYaw;
+	private float oldRotationPitch;
+	private boolean field_9382_bF;
+	private boolean field_35227_cs;
+	private boolean wasSneaking;
+	private int field_12242_bI;
+	private int auraCounter;
 }

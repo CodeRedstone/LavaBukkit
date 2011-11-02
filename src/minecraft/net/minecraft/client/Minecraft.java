@@ -8,6 +8,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.PrintStream;
 import net.minecraft.src.*;
+
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.*;
 import org.lwjgl.opengl.*;
@@ -1106,16 +1107,16 @@ public abstract class Minecraft
             for(; gameSettings.keyBindInventory.func_35962_c(); displayGuiScreen(new GuiInventory(thePlayer))) { }
             for(; gameSettings.keyBindDrop.func_35962_c(); thePlayer.dropCurrentItem()) { }
             for(; isMultiplayerWorld() && gameSettings.keyBindChat.func_35962_c(); displayGuiScreen(new GuiChat())) { }
-            if(Keyboard.getEventKey() == Keyboard.KEY_B){ 
+            if(Keyboard.getEventKey() == Keyboard.KEY_B) { 
             	displayGuiScreen(new GuiConsole()); 
-            }
+            	}
             if(thePlayer.func_35196_Z())
             {
                 if(!gameSettings.field_35381_w.field_35965_e)
                 {
                     playerController.func_35638_c(thePlayer);
                 }
-            } else
+            } else 
             {
                 for(; gameSettings.field_35382_v.func_35962_c(); clickMouse(0)) { }
                 for(; gameSettings.field_35381_w.func_35962_c(); clickMouse(1)) { }
@@ -1578,7 +1579,7 @@ public abstract class Minecraft
         thread.start();
     }
 
-    public static NetClientHandler getSendQueue()
+    public NetClientHandler getSendQueue()
     {
         if(thePlayer instanceof EntityClientPlayerMP)
         {
@@ -1662,8 +1663,8 @@ public abstract class Minecraft
     public int displayHeight;
     private OpenGlCapsChecker glCapabilities;
     private Timer timer;
-    public static World theWorld;
-    public RenderGlobal renderGlobal;
+    public World theWorld;
+    public static RenderGlobal renderGlobal;
     public static EntityPlayerSP thePlayer;
     public EntityLiving renderViewEntity;
     public EffectRenderer effectRenderer;

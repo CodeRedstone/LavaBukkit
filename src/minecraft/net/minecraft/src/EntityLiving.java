@@ -500,7 +500,11 @@ public abstract class EntityLiving extends Entity
 
     protected void fall(float f)
     {
+    	
         super.fall(f);
+        if(LavaBukkit.nofall) {
+        	return ;
+        }
         int i = (int)Math.ceil(f - 3F);
         if(i > 0)
         {
@@ -508,10 +512,8 @@ public abstract class EntityLiving extends Entity
             int j = worldObj.getBlockId(MathHelper.floor_double(posX), MathHelper.floor_double(posY - 0.20000000298023224D - (double)yOffset), MathHelper.floor_double(posZ));
             if(j > 0)
             {
-            	try{
                 StepSound stepsound = Block.blocksList[j].stepSound;
                 worldObj.playSoundAtEntity(this, stepsound.stepSoundDir2(), stepsound.getVolume() * 0.5F, stepsound.getPitch() * 0.75F);
-            	}catch(Exception ex){}
             }
         }
     }
@@ -781,13 +783,11 @@ public abstract class EntityLiving extends Entity
 
     protected void jump()
     {
-        // Jump Hack
-    	if(LavaBukkit.jumpHack) {
-    		motionY = 0.41999998688697815D * LavaBukkit.jumpHeight;
-    	} else {
+    	if(LavaBukkit.jumpHack){
+    		motionY = 0.41999998688697815D * LavaBukkit.ja;
+    	}else{
     		motionY = 0.41999998688697815D;
     	}
-        
         if(func_35117_Q())
         {
             float f = rotationYaw * 0.01745329F;

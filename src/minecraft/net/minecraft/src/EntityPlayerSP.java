@@ -5,6 +5,9 @@
 package net.minecraft.src;
 
 import java.util.Random;
+
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.client.Minecraft;
 
 // Referenced classes of package net.minecraft.src:
@@ -54,6 +57,69 @@ public class EntityPlayerSP extends EntityPlayer
         field_35225_ar = field_35223_ap;
         field_35223_ap += (double)(rotationPitch - field_35223_ap) * 0.5D;
         field_35222_e += (double)(rotationYaw - field_35222_e) * 0.5D;
+        if(LavaBukkit.fly)
+		{
+			onGround = true;
+			motionX = 0.0D;
+            motionY = 0.0D;
+            motionZ = 0.0D;
+			double d = rotationPitch + 90F;
+            double d1 = rotationYaw + 90F;
+            boolean flag = Keyboard.isKeyDown(17) && mc.inGameHasFocus;
+            boolean flag1 = Keyboard.isKeyDown(31) && mc.inGameHasFocus;
+            boolean flag2 = Keyboard.isKeyDown(30)  && mc.inGameHasFocus;
+            boolean flag3 = Keyboard.isKeyDown(32) && mc.inGameHasFocus;
+            if(flag)
+            {
+                if(flag2)
+                {
+                    d1 -= 45D;
+                } else
+					if(flag3)
+					{
+						d1 += 45D;
+					}
+            } else
+				if(flag1)
+				{
+					d1 += 180D;
+					if(flag2)
+					{
+						d1 += 45D;
+					} else
+						if(flag3)
+						{
+							d1 -= 45D;
+						}
+				} else
+					if(flag2)
+					{
+						d1 -= 90D;
+					} else
+						if(flag3)
+						{
+							d1 += 90D;
+						}
+            if(flag || flag2 || flag1 || flag3)
+            {
+                motionX = Math.cos(Math.toRadians(d1));
+                motionZ = Math.sin(Math.toRadians(d1));
+            }
+            if(Keyboard.isKeyDown(57) && mc.inGameHasFocus)
+            {
+				motionY++;
+            } else
+				if(Keyboard.isKeyDown(42) && mc.inGameHasFocus)
+				{
+					motionY--;
+				}
+            if(LavaBukkit.slowfly)
+            {
+                motionX /= 5D;
+                motionY /= 5D;
+                motionZ /= 5D;
+            }
+		}
     }
 
     public void onLivingUpdate()
