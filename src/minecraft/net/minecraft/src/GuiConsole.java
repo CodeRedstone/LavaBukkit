@@ -74,6 +74,7 @@ public class GuiConsole extends GuiScreen
 					mc.thePlayer.addChatMessage("\247cWelcome to LavaBukkit's Help page");
 					mc.thePlayer.addChatMessage("credits");
 					mc.thePlayer.addChatMessage("hChat - Hides Chat");
+					mc.thePlayer.addChatMessage("target - Toggles KillAura targeting mode");
 				}
 				if(s1.equals("day")) { LavaBukkit.day = !LavaBukkit.day; }  
 				if(chat[0].equals("credits"))
@@ -83,6 +84,18 @@ public class GuiConsole extends GuiScreen
 					mc.thePlayer.addChatMessage("http://www.github.com/XiCracked/LavaBukkit");
 				}
 				if(chat[0].equals("hChat")) LavaBukkit.hideChat = !LavaBukkit.hideChat;
+				if(chat[0].equals("target")) 
+				{
+					LavaBukkit.targetPlayersOnly = !LavaBukkit.targetPlayersOnly;
+					if (LavaBukkit.targetPlayersOnly)
+					{
+						mc.thePlayer.addChatMessage("KillAura will only target players.");
+					}
+					else
+					{
+						mc.thePlayer.addChatMessage("KillAura will target players and mobs.");
+					}
+				}
 
 			}
 			mc.displayGuiScreen(null);

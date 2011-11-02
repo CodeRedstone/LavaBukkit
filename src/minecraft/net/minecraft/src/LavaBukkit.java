@@ -20,6 +20,9 @@ public class LavaBukkit {
 
 	public static boolean day = false;
 	public static boolean hideChat = false;
+	
+	public static boolean killAura = false;
+	public static boolean targetPlayersOnly = false;
 
 	public static ArrayList activatedHacks = new ArrayList();
 
@@ -43,6 +46,9 @@ public class LavaBukkit {
 				WorldInfo.worldTime = 5975L;
 			}
 		}
+		
+		if (checkKey(Keyboard.KEY_R)) killAura = !killAura;
+		if (killAura) activatedHacks.add("KillAura");
 	}
 
 	private static boolean checkKey(int i){
