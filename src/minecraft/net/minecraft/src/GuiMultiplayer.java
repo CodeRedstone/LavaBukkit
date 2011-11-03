@@ -93,6 +93,7 @@ public class GuiMultiplayer extends GuiScreen
         controlList.add(field_35345_j = new GuiButton(2, width / 2 - 74, height - 28, 70, 20, stringtranslate.translateKey("selectServer.delete")));
         controlList.add(field_35348_i = new GuiButton(1, width / 2 - 154, height - 52, 100, 20, stringtranslate.translateKey("selectServer.select")));
         controlList.add(new GuiButton(4, width / 2 - 50, height - 52, 100, 20, stringtranslate.translateKey("selectServer.direct")));
+        controlList.add(new GuiSmallButton(10, 0, 0, "Change Name"));
         controlList.add(new GuiButton(3, width / 2 + 4 + 50, height - 52, 100, 20, stringtranslate.translateKey("selectServer.add")));
         controlList.add(new GuiButton(8, width / 2 + 4, height - 28, 70, 20, stringtranslate.translateKey("selectServer.refresh")));
         controlList.add(new GuiButton(0, width / 2 + 4 + 76, height - 28, 75, 20, stringtranslate.translateKey("gui.cancel")));
@@ -155,7 +156,10 @@ public class GuiMultiplayer extends GuiScreen
         if(guibutton.id == 8)
         {
             mc.displayGuiScreen(new GuiMultiplayer(parentScreen));
-        } else
+        }
+        if(guibutton.id == 10) {
+        	mc.displayGuiScreen(new GuiName(this));
+        }else
         {
             field_35342_d.actionPerformed(guibutton);
         }

@@ -1656,7 +1656,7 @@ public abstract class Minecraft
 
     public static byte field_28006_b[] = new byte[0xa00000];
     private static Minecraft theMinecraft;
-    public PlayerController playerController;
+    public static PlayerController playerController;
     private boolean fullscreen;
     private boolean hasCrashed;
     public int displayWidth;

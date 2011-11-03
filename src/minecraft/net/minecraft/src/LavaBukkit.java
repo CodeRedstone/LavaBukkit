@@ -107,6 +107,10 @@ public class LavaBukkit {
 				Minecraft.thePlayer.addChatMessage("Invalid Syntax: #spam=<Message>=[Integer]");
 			}
 		}
+		if(chat[0].equals("drop")){
+			int i = 4;
+			//Minecraft.playerController.sendUseItem(0, i, 0, false, Minecraft.thePlayer);
+		}
 	}
 
 	private static boolean checkKey(int i){

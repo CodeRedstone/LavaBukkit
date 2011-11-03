@@ -94,7 +94,11 @@ public class RenderPlayer extends RenderLiving
                     GL11.glNormal3f(0.0F, 1.0F, 0.0F);
                     GL11.glRotatef(-renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
                     GL11.glRotatef(renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
-                    GL11.glScalef(-f1, -f1, f1);
+                    if(LavaBukkit.visibleNames){
+                    	GL11.glScalef(-f1 * (f2 * 0.2F), -f1 * (f2 * 0.2F), f1 * (f2 * 0.2F));
+                    } else {
+                    	GL11.glScalef(-f1, -f1, f1);
+                    }
                     GL11.glDisable(2896 /*GL_LIGHTING*/);
                     GL11.glTranslatef(0.0F, 0.25F / f1, 0.0F);
                     GL11.glDepthMask(false);
@@ -112,7 +116,11 @@ public class RenderPlayer extends RenderLiving
                     tessellator.draw();
                     GL11.glEnable(3553 /*GL_TEXTURE_2D*/);
                     GL11.glDepthMask(true);
-                    fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, 0, 0x20ffffff);
+                    if(LavaBukkit.visibleNames){
+                    	fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, 0, 0xFF3300);
+                    } else {
+                    	fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, 0, 0x20ffffff);
+                    }
                     GL11.glEnable(2896 /*GL_LIGHTING*/);
                     GL11.glDisable(3042 /*GL_BLEND*/);
                     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

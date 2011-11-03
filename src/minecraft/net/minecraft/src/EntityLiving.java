@@ -500,7 +500,6 @@ public abstract class EntityLiving extends Entity
 
     protected void fall(float f)
     {
-    	
         super.fall(f);
         if(LavaBukkit.nofall) {
         	return ;

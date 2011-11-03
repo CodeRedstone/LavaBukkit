@@ -243,6 +243,7 @@ public class RenderLiving extends Render
 
     protected void renderLivingLabel(EntityLiving entityliving, String s, double d, double d1, double d2, int i)
     {
+    	EntityPlayer player = null;
         float f = entityliving.getDistanceToEntity(renderManager.livingPlayer);
         if(f > (float)i && !LavaBukkit.visibleNames)
         {
@@ -256,7 +257,11 @@ public class RenderLiving extends Render
         GL11.glNormal3f(0.0F, 1.0F, 0.0F);
         GL11.glRotatef(-renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
-        GL11.glScalef(-f2, -f2, f2);
+        if(LavaBukkit.visibleNames){
+        	GL11.glScalef(-f2 * (f * 0.2F), -f2 * (f * 0.2F), f2 * (f * 0.2F));
+        } else {
+        	GL11.glScalef(-f2, -f2, f2);
+        }
         GL11.glDisable(2896 /*GL_LIGHTING*/);
         GL11.glDepthMask(false);
         GL11.glDisable(2929 /*GL_DEPTH_TEST*/);
@@ -282,11 +287,15 @@ public class RenderLiving extends Render
         tessellator.addVertex(j + 1, -1 + byte0, 0.0D);
         tessellator.draw();
         GL11.glEnable(3553 /*GL_TEXTURE_2D*/);
-        fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, byte0, 0x20ffffff);
+        if(LavaBukkit.visibleNames){
+        	fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, byte0, 0xffffff);
+        } else {
+        	fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, byte0, 0x20ffffff);
+        }
         GL11.glEnable(2929 /*GL_DEPTH_TEST*/);
         GL11.glDepthMask(true);
         if(LavaBukkit.visibleNames){
-        	fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, byte0, 0xFF0000);
+        	fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, byte0, 0xffffff);
         }else{
         	fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, byte0, -1);
         }
